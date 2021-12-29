@@ -1,18 +1,31 @@
-
-d3.csv("../assets/MyCSV.csv", function(data){
-    console.log(data);
-    for(let i=0;i<data.length;i++){
-        var x=document.getElementsByClassName('table')[0].insertRow();
-        var j = 0
-        for(let [key, value] of Object.entries(data[i])){
-            var cell = x.insertCell(j);
-            j++;
-            cell.innerHTML = value;
-
-        }
-    }    
-    getPagination('#table-id');
+d3.csv("../assets/MyCSV.csv", (data)=>{
+  showTable(data)
 });
+
+function showTable(data){
+  console.log(data);
+  for(let i=0;i<data.length;i++){
+      var x=document.getElementsByClassName('table')[0].insertRow();
+      var j = 0
+      for(let [key, value] of Object.entries(data[i])){
+          var cell = x.insertCell(j);
+          j++;
+          cell.innerHTML = value;
+
+      }
+  }    
+  getPagination('#table-id');
+  SortTables('#table-id',data)
+}
+
+function SortTables(table,data){
+    $('#MaxColumns').on('change', function(evt){
+      var selected = $('#MaxColumns').val();
+      var sortedObjs = _.sortBy( data, selected );
+      console.log(sortedObjs)
+      // showTable(sortedObjs)
+    })
+}
 
 function getPagination(table) {
     var lastPage = 1;
